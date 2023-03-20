@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Buscar cliente por rango de edad</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  
+  {{#if clientesEncontrados.length}}
+    <h2>Clientes encontrados</h2>
+    <table>
+      <tr>
+        <th>RUT</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+      </tr>
+      {{#each clientesEncontrados}}
+        <tr>
+          <td>{{this.rut}}</td>
+          <td>{{this.nombre}}</td>
+          <td>{{this.edad}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  {{else}}
+    <p>No hay clientes que cumplan con ese criterio.</p>
+  {{/if}}
+   <a href="/" class="button">Volver a la lista de clientes</a>
+</body>
+</html>

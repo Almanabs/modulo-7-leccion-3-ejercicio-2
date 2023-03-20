@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Buscar cliente por edad</title>
+  <link rel="stylesheet" href="styles.css">
+  <style>
+    .button {
+      display: inline-block;
+      padding: 10px 20px;
+      background-color: #4CAF50;
+      color: white;
+      text-align: center;
+      text-decoration: none;
+      font-size: 16px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h2>Buscar por edad</h2>
+<form method="get" action="/clientes/buscaredad">
+  <label for="edad">Edad:</label>
+  <input type="number" id="edad" name="edad">
+  <button type="submit">Buscar</button>
+</form>
+  {{#if clientesEncontrados.length}}
+    <h2>Clientes encontrados</h2>
+    <table>
+      <tr>
+        <th>RUT</th>
+        <th>Nombre</th>
+        <th>Edad</th>
+      </tr>
+      {{#each clientesEncontrados}}
+        <tr>
+          <td>{{this.rut}}</td>
+          <td>{{this.nombre}}</td>
+          <td>{{this.edad}}</td>
+        </tr>
+      {{/each}}
+    </table>
+  {{else}}
+    <p>No se encontraron clientes con esa edad.</p>
+  {{/if}}
+   <a href="/" class="button">Volver a la lista de clientes</a>
+</body>
+</html>

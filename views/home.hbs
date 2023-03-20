@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>Lista de Clientes</title>
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <h1>Lista de Clientes</h1>
+  <table>
+    <thead>
+      <tr>
+        <th>Nombre</th>
+        <th>RUT</th>
+        <th>Edad</th>
+      </tr>
+    </thead>
+    <tbody>
+      {{#each clientes}}
+        <tr>
+          <td>{{this.nombre}}</td>
+          <td>{{this.rut}}</td>
+          <td>{{this.edad}}</td>
+        </tr>
+      {{/each}}
+    </tbody>
+  </table>
+  <h2>Crear nuevo cliente</h2>
+  <form method="post" action="/clientes">
+    <label for="nombre">Nombre:</label>
+    <input type="text" id="nombre" name="nombre">
+    <br>
+    <label for="rut">RUT:</label>
+    <input type="text" id="rut" name="rut">
+    <br>
+    <label for="edad">Edad:</label>
+    <input type="number" id="edad" name="edad">
+    <br>
+    <button type="submit">Crear</button>
+  </form>
+  
+ <h1>Modificar cliente</h1>
+<form method="post" action="/clientes/modificar">
+  <label for="rut">RUT:</label>
+  <input type="text" id="rut" name="rut" value="{{this.rut}}">
+  <br>
+  <label for="nombre">Nuevo nombre:</label>
+  <input type="text" id="nombre" name="nombre">
+  <br>
+  <label for="nombre-actual">Nombre actual:</label>
+  <input type="text" id="nombre-actual" name="nombre-actual" value="{{this.nombre}}">
+  <br>
+  <button type="submit">Modificar</button>
+</form>
+
+<h2>Eliminar cliente</h2>
+<form method="post" action="/clientes/eliminar">
+  <label for="rut">RUT:</label>
+  <input type="text" id="rut" name="rut">
+  <button type="submit">Eliminar</button>
+</form>
+
+<h2>Buscar cliente</h2>
+  <form method="get" action="/clientes/buscar">
+    <label for="rut">RUT:</label>
+    <input type="text" id="rut" name="rut">
+    <button type="submit">Buscar</button>
+  </form>
+
+<h2>Buscar por edad</h2>
+<form method="get" action="/clientes/buscaredad">
+  <label for="edad">Edad:</label>
+  <input type="number" id="edad" name="edad">
+  <button type="submit">Buscar</button>
+</form>
+
+<h1>Buscar cliente por rango de edad</h1>
+  <form method="get" action="/clientes/buscarPorRangoEdad">
+    <label for="edadMin">Edad mínima:</label>
+    <input type="number" id="edadMin" name="edadMin">
+    <br>
+    <label for="edadMax">Edad máxima:</label>
+    <input type="number" id="edadMax" name="edadMax">
+    <br>
+    <button type="submit">Buscar</button>
+  </form>
+
+<h1>Eliminar clientes por edad</h1>
+<form method="POST" action="/clientes/eliminarPorEdad/:edad" id="eliminar-edad-form">
+  <label for="edad">Edad a eliminar:</label>
+  <input type="number" id="edad" name="edad">
+  <br>
+  <button type="submit" name="eliminar">Eliminar por edad</button>
+</form>
+
+<h1>Eliminar clientes por rango de edad</h1>
+<form method="DELETE" action="/clientes/eliminarPorRangoEdad" id="eliminar-rango-edad-form">
+  <label for="min">Edad mínima:</label>
+  <input type="number" id="min" name="min">
+  <br>
+  <label for="max">Edad máxima:</label>
+  <input type="number" id="max" name="max">
+  <br>
+  <button type="submit">Eliminar por rango de edad</button>
+</form>
+
+
+<script>
+  //eliminar por edad
+  const form = document.querySelector('#eliminar-edad-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const edad = document.querySelector('#edad').value;
+    const response = await fetch(`/clientes/eliminarPorEdad/${edad}`, {method: 'DELETE'});
+    if (response.status === 200) {
+      const clientesEliminados = await response.text();
+      window.alert(clientesEliminados);
+    } else if (response.status === 404) {
+      const mensaje = await response.text();
+      window.alert(mensaje);
+    }
+  });
+
+
+  // eliminar por rango de edad
+  const form = document.querySelector('#eliminar-rango-edad-form');
+  form.addEventListener('submit', async (event) => {
+    event.preventDefault();
+    const min = document.querySelector('#min').value;
+    const max = document.querySelector('#max').value;
+    const response = await fetch(/clientes/eliminarPorRangoEdad/${min}/${max}, {method: 'DELETE'});
+    if (response.status === 200) {
+      const clientesEliminados = await response.text();
+      window.alert(clientesEliminados);
+    } else if (response.status === 404) {
+      const mensaje = await response.text();
+      window.alert(mensaje);
+    }
+  });
+</script>
+</body>
+</html>
